@@ -1,0 +1,147 @@
+*partial-cipher.txt*	Encrypt part of the text file.
+
+Version: 0.1.0
+Copyright (C) 2018 eidera <https://github.com/eidera/vim-partial-cipher>
+License: MIT license
+
+CONTENTS					*partial-cipher-contents*
+
+Introduction		|partial-cipher-introduction|
+Interface		|partial-cipher-interface|
+  Functions		  |partial-cipher-functions|
+  Variables		  |partial-cipher-variables|
+Changelog		|partial-cipher-changelog|
+
+
+
+
+==============================================================================
+INTRODUCTION					*partial-cipher-introduction*
+
+*partial-cipher* is a Vim plugin to provide the function to encrypt part of
+the text file.
+
+Furthermore, when saving a file, it automatically encrypts the target
+character string. When opening the file, it automatically decrypts the
+encrypted character string.
+
+The character string to be encrypted is a character string enclosed by the
+prescribed tag. You can change this tag with "g:
+partial_cipher_target_encrypt_tag".
+
+
+For example:
+
+>
+		sample text1
+		<decrypt>my password</decrypt>
+		sample text2
+<
+
+The text enclosed by <decrypt> and </decrypt> is encrypted and saved.
+
+
+You can also call the function for manually encrypting or decrypting without
+calling it automatically.
+
+>
+	call partial_cipher#tag_encrypter()
+	call partial_cipher#tag_decrypter()
+<
+
+
+Requirements:
+- Vim 8.0 or later
+
+Latest version:
+https://github.com/eidera/vim-partial-cipher
+
+
+
+
+==============================================================================
+INTERFACE					*partial-cipher-interface*
+
+
+------------------------------------------------------------------------------
+FUNCTIONS					*partial-cipher-functions*
+
+						*partial_cipher#tag_encrypter()*
+partial_cipher#tag_encrypter()
+      Encrypt markuped text.
+      This function is called automaticaly when file save.
+
+						*partial_cipher#tag_decrypter()*
+partial_cipher#tag_decrypter()
+      Decrypt markuped text.
+      This function is called automatically in the following cases:
+        - when file opened.
+        - After partial_cipher#tag_encrypter() executed at file saved.
+
+
+------------------------------------------------------------------------------
+VARIABLES					*partial-cipher-variables*
+
+						*g:partial_cipher_crypter_enc*
+g:partial_cipher_crypter_enc	string (default: 'aes-256-ctr')
+	Encryption algorithm that openssl can use.
+
+						*g:partial_cipher_passwd_file_path*
+g:partial_cipher_passwd_file_path	string (default: '${HOME}/.vim_partial_cipher_pass')
+	Encryption passphrase text file.
+
+  ex. For passphrase is 'my_password_example'
+		$ cat ${HOME}/.vim_partial_cipher_pass
+		my_password_example
+
+						*g:partial_cipher_target_encrypt_tag*
+g:partial_cipher_target_encrypt_tag	string (default: 'decrypt')
+	Tag name to be encrypted.
+
+	ex.
+		sample text1
+		<decrypt>my password</decrypt>
+		sample text2
+
+
+						*g:partial_cipher_target_decrypt_tag*
+g:partial_cipher_target_decrypt_tag	string (default: 'encrypt')
+	Tag name to be decrypted.
+
+	ex.
+		sample text1
+		<encrypt>ENCRYPTED STRING</encrypt>
+		sample text2
+
+						*g:partial_cipher_target_files*
+g:partial_cipher_target_files	string (default: '*.crypt.md,memo.md')
+	Filename for automatic encryption or decryption.
+	You can set the value to be put in the autocmd's {pat}.
+
+						*g:partial_cipher_always_highlight*
+g:partial_cipher_always_highlight	integer (default: 1)
+	Sets whether to enable highlighting even for files other than the target
+	file set at g:partial_cipher_target_files.
+
+						*g:partial_crypt_decrypt_hightlight_name*
+g:partial_crypt_decrypt_hightlight_name	string (default: 'SpellBad')
+	Highlight name of the string to be encrypted.
+
+						*g:partial_crypt_encrypt_hightlight_name*
+g:partial_crypt_encrypt_hightlight_name	string (default: 'SpellRare')
+	Highlight name of the string to be decrypted.
+
+
+
+
+==============================================================================
+CHANGELOG					*partial-cipher-changelog*
+
+0.1.0	2018-03-17T01:00:00+09:00               *partial-cipher-changelog-0.1.0*
+	- Initial version.
+
+
+
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:fen:fdl=0:fdm=marker:
