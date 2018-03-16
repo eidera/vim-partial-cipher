@@ -52,6 +52,7 @@ calling it automatically.
 
 Requirements:
 - Vim 8.0 or later
+- Openssl command
 
 Latest version:
 https://github.com/eidera/vim-partial-cipher
